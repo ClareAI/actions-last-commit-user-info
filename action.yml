@@ -8,15 +8,15 @@ inputs:
   auth-token:
     description: 'Usually GitHub Auth Token'
     required: true
-    default: '${{ secrets.GITHUB_TOKEN }}'
+    default: "${{ secrets.GITHUB_TOKEN }}"
   repository:
     description: 'Current repository name'
     required: true
-    default: '${{ github.repository }}'
+    default: "${{ github.repository }}"
   commit-sha:
     description: 'Last commit SHA triggered the workflow'
     required: true
-    default: '${{ github.sha }}'
+    default: "${{ github.sha }}"
 
 outputs:
   author-name:
@@ -30,7 +30,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.auth-token }}
-    - ${{ inputs.repository }}
-    - ${{ inputs.commit-sha }}
+    - "${{ inputs.auth-token }}"
+    - "${{ inputs.repository }}"
+    - "${{ inputs.commit-sha }}"
   entrypoint: "/app/entrypoint.sh"
