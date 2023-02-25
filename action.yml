@@ -8,15 +8,15 @@ inputs:
   auth-token:
     description: 'Usually GitHub Auth Token'
     required: true
-    default: "${{ secrets.GITHUB_TOKEN }}"
+    default: ''
   repository:
     description: 'Current repository name'
     required: true
-    default: "${{ github.repository }}"
+    default: ''
   commit-sha:
     description: 'Last commit SHA triggered the workflow'
     required: true
-    default: "${{ github.sha }}"
+    default: ''
 
 outputs:
   author-name:
