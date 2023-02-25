@@ -8,11 +8,6 @@ This action gets the last commit user info.
 ## Usage
 
 ```yaml
-# use default values
-- uses: ClareAI/actions-last-commit-user-info@v1
-```
-or
-```yaml
 # specify values
 - uses: ClareAI/actions-last-commit-user-info@v1
   id: last-commit-user-info

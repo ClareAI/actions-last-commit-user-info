@@ -2,7 +2,10 @@
 
 if (args.Length != 3) throw new ArgumentException("Invalid argument count. Expected 3 but get " + args.Length);
 
-if args.any(string.IsNullOrEmpty) throw new ArgumentException("Invalid argument. All arguments must be non-empty");
+foreach (var arg in args)
+{
+    if (string.IsNullOrEmpty(arg)) throw new ArgumentException("Invalid argument. All arguments must be non-empty");
+}
 
 var token = args[0];
 var repository = args[1];
