@@ -1,0 +1,36 @@
+name: 'Get last commit user info'
+description: 'Get the last commit user full name, profile URL and commit URL'
+branding:
+  icon: at-sign
+  color: green
+
+inputs:
+  auth-token:
+    description: 'Usually GitHub Auth Token'
+    required: true
+    default: '${{ secrets.GITHUB_TOKEN }}'
+  repository:
+    description: 'Current repository name'
+    required: true
+    default: '${{ github.repository }}'
+  commit-sha:
+    description: 'Last commit SHA triggered the workflow'
+    required: true
+    default: '${{ github.sha }}'
+
+outputs:
+  author-name:
+    description: 'Full name of the last commit user'
+  profile-url:
+    description: 'Profile URL of the last commit user'
+  commit-url:
+    description: 'Commit URL of the last commit'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.auth-token }}
+    - ${{ inputs.repository }}
+    - ${{ inputs.commit-sha }}
+  entrypoint: "/app/entrypoint.sh"
