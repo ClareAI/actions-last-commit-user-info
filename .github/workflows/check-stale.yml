@@ -1,0 +1,31 @@
+name: 'Close stale issues and PRs after inactivity period'
+
+permissions:
+  contents: write # only for delete-branch option
+  issues: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  # Run weekly at 04:00 HKT on each Monday
+  schedule:
+    - cron: '0 20 * * 0'
+
+jobs:
+  mark-or-close-stale-issue-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v6
+        with:
+          close-issue-message: 'Issue detected inactive for the last 14 days. Auto closing because of no activity on the issue.'
+          close-pr-message: 'Pull request detected inactive for the last 14 days. Auto closing because of no activity on the PR.'
+          stale-pr-message: 'Pull request detected inactive for more than 10 days. Auto closing PR if it remains inactive after 4 days.'
+          stale-issue-message: 'Issue detected inactive for more than 10 days. Please find someone to take a look. Auto closing issue if it remains inactive after 4 days.'
+          stale-issue-label: 'Help Needed'
+          close-issue-label: 'InActive: Auto Close'
+          delete-branch: true
+          operations-per-run: 50
+          exempt-pr-labels: 'Keep'
+          exempt-issue-labels: 'Keep'
+          days-before-stale: 10
+          days-before-close: 4

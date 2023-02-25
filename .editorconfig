@@ -1,0 +1,21 @@
+# This is general purpose config, if you need language specific rules please make sub-directory .editorconfig files with root = false
+# Or modify this file as you needed in derived repository
+
+# top-most EditorConfig file
+root = true
+
+# Common settings
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+# Javascript, Typescript, JSON
+[*.{ts,js,json,dart}]
+indent_size = 2
+
+# C#, Python
+[*.{cs,py,java,cpp}]
+indent_size = 4
