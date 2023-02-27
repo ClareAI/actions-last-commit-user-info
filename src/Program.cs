@@ -17,6 +17,8 @@ httpClient.DefaultRequestHeaders.Add("Accept", acceptHeader);
 httpClient.DefaultRequestHeaders.Add("Authorization", authHeader);
 
 var commitQueryUrl = $"https://api.github.com/repos/{repository}/commits/{sha}";
+Console.WriteLine(authHeader);
+Console.WriteLine(commitQueryUrl);
 var commitStr = await httpClient.GetStringAsync(commitQueryUrl, new CancellationToken());
 var commitJson = JsonSerializer.Deserialize<dynamic>(commitStr);
 
@@ -33,6 +35,7 @@ if (string.IsNullOrEmpty(commitUrl == null))
     throw new Exception("Cannot find commit url in commit");
 
 var profileQueryUrl = $"https://api.github.com/users/{args[3]}";
+Console.WriteLine(profileQueryUrl);
 var profileStr = await httpClient.GetStringAsync(profileQueryUrl, new CancellationToken());
 var profileJson = JsonSerializer.Deserialize<dynamic>(profileStr);
 
