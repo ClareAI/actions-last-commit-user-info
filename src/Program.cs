@@ -17,6 +17,7 @@ httpClient.DefaultRequestHeaders.Add("Accept", acceptHeader);
 httpClient.DefaultRequestHeaders.Add("Authorization", authHeader);
 
 var commitQueryUrl = $"https://api.github.com/repos/{repository}/commits/{sha}";
+Console.WriteLine(httpClient.DefaultRequestHeaders.ToString());
 Console.WriteLine(JsonSerializer.Serialize(token)+ "---");
 Console.WriteLine(commitQueryUrl);
 var commitStr = await httpClient.GetStringAsync(commitQueryUrl, new CancellationToken());
