@@ -1,11 +1,10 @@
-﻿using Flurl.Http;
+﻿using System.Text.Json;
 
-if (args.Length != 3) throw new ArgumentException("Invalid argument count. Expected 3 but get " + args.Length);
+if (args.Length != 3)
+    throw new ArgumentException("Invalid argument count. Expected 3 but get " + args.Length);
 
-foreach (var arg in args)
-{
-    if (string.IsNullOrEmpty(arg)) throw new ArgumentException("Invalid argument. All arguments must be non-empty");
-}
+if (args.Any(string.IsNullOrEmpty))
+    throw new ArgumentException("Invalid argument. All arguments must be non-empty");
 
 var token = args[0];
 var repository = args[1];
@@ -14,11 +13,13 @@ var sha = args[2];
 const string acceptHeader = "application/vnd.github.v3+json";
 var authHeader = $"Bearer {token}";
 var headers = new {Accept = acceptHeader, Authorization = authHeader};
+var httpClient = new HttpClient();
+httpClient.DefaultRequestHeaders.Add("Accept", acceptHeader);
+httpClient.DefaultRequestHeaders.Add("Authorization", authHeader);
 
 var commitQueryUrl = $"https://api.github.com/repos/{repository}/commits/{sha}";
-var commitJson = await commitQueryUrl
-    .WithHeaders(headers)
-    .GetJsonAsync();
+var commitStr = await httpClient.GetStringAsync(commitQueryUrl, new CancellationToken());
+var commitJson = JsonSerializer.Deserialize<dynamic>(commitStr);
 
 var authorLogin = commitJson?["author"]?["login"];
 if (authorLogin == null) throw new Exception("Cannot find author login in commit");
@@ -30,9 +31,8 @@ var commitUrl = commitJson?["html_url"];
 if (commitUrl == null) throw new Exception("Cannot find commit url in commit");
 
 var profileQueryUrl = $"https://api.github.com/users/{args[3]}";
-var profileJson = await profileQueryUrl
-    .WithHeaders(headers)
-    .GetJsonAsync();
+var profileStr = await httpClient.GetStringAsync(profileQueryUrl, new CancellationToken());
+var profileJson = JsonSerializer.Deserialize<dynamic>(profileStr);
 
 var profileUrl = profileJson?["html_url"];
 if (profileUrl == null) throw new Exception("Cannot find profile url in profile");
