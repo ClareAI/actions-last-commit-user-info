@@ -12,7 +12,6 @@ var sha = args[2];
 
 const string acceptHeader = "application/vnd.github.v3+json";
 var authHeader = $"Bearer {token}";
-var headers = new {Accept = acceptHeader, Authorization = authHeader};
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Add("Accept", acceptHeader);
 httpClient.DefaultRequestHeaders.Add("Authorization", authHeader);
@@ -22,20 +21,24 @@ var commitStr = await httpClient.GetStringAsync(commitQueryUrl, new Cancellation
 var commitJson = JsonSerializer.Deserialize<dynamic>(commitStr);
 
 var authorLogin = commitJson?["author"]?["login"];
-if (authorLogin == null) throw new Exception("Cannot find author login in commit");
+if (string.IsNullOrEmpty(authorLogin == null))
+    throw new Exception("Cannot find author login in commit");
 
 var authorName = commitJson?["commit"]?["author"]?["name"];
-if (authorName == null) throw new Exception("Cannot find author name in commit");
+if (string.IsNullOrEmpty(authorName == null))
+    throw new Exception("Cannot find author name in commit");
 
 var commitUrl = commitJson?["html_url"];
-if (commitUrl == null) throw new Exception("Cannot find commit url in commit");
+if (string.IsNullOrEmpty(commitUrl == null))
+    throw new Exception("Cannot find commit url in commit");
 
 var profileQueryUrl = $"https://api.github.com/users/{args[3]}";
 var profileStr = await httpClient.GetStringAsync(profileQueryUrl, new CancellationToken());
 var profileJson = JsonSerializer.Deserialize<dynamic>(profileStr);
 
 var profileUrl = profileJson?["html_url"];
-if (profileUrl == null) throw new Exception("Cannot find profile url in profile");
+if (string.IsNullOrEmpty(profileUrl == null))
+    throw new Exception("Cannot find profile url in profile");
 
 ExportOutput("author-name", authorName);
 ExportOutput("commit-url", commitUrl);
